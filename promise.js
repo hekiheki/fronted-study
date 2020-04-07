@@ -46,7 +46,7 @@ class myPromise {
   }
 
   catch (reject) {
-    this.fail(reject || function () { });
+    this.then(undefined, reject);
     return this;
   }
 
