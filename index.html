@@ -7,27 +7,55 @@
 <body>
   <script src="mypromise.js"></script>
   <script>
-    //  这里的Promise是ES6封装好的，并不是我们自己实现的 
-    // let promise = new Promise((resolve,reject)=>{ 
-    //   resolve('123');
-    // })
+    // all方法
+    const promise1 = myPromise.resolve(3);
+    const promise2 = 42;
+    const promise3 = new myPromise(function(resolve, reject) {
+      setTimeout(resolve, 100, 'foo');
+    });
 
-    let promise = new myPromise((resolve,reject)=>{ 
-      resolve('123');
-    })
+    Promise.all([promise1, promise2, promise3]).then(function(values) {
+      console.log(values);
+    });
+    // expected output: Array [3, 42, "foo"]
 
-    let promise2 = promise.then((data)=>{
-      throw new Error('error')
-    })
-    let promise3 = promise2.then((data)=>{
-      return data
-    }).catch(error => {
-      console.log(error);
-    })
+    // catch方法
+    var p1 = new myPromise(function(resolve, reject) {
+      resolve('Success');
+    });
 
-    let promise4 = promise3.then(data => {
-      console.log(data)
-    })
+
+    p1.then(function(value) {
+      console.log(value); // "Success!"
+      throw 'oh, no!';
+    }).catch(function(e) {
+      console.log(e); // "oh, no!"
+    }).then(function(){
+      console.log('after a catch the chain is restored'); // 期望
+    }, function () {
+      console.log('Not fired due to the catch'); // 实际，与原生不一致
+    });
+
+    // // 在异步函数中抛出的错误不会被catch捕获到
+    var p2 = new myPromise(function(resolve, reject) {
+      setTimeout(function() {
+        throw 'Uncaught Exception!';
+      }, 10);
+    });
+
+    p2.catch(function(e) {
+      console.log(e); // 不会执行
+    });
+
+    // 在resolve()后面抛出的错误会被忽略
+    var p3 = new myPromise(function(resolve, reject) {
+      resolve();
+      throw 'Silenced Exception!'; // 执行了，与原生不一致
+    });
+
+    p3.catch(function(e) {
+       console.log(e); // 不会执行
+    });
 
   </script>
 </body>
