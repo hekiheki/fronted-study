@@ -24,7 +24,6 @@ class myPromise {
       this.value = value
       this.successList.forEach(fn => fn())
     }
-    return this;
   }
 
   reject (reason) {
@@ -33,7 +32,6 @@ class myPromise {
       this.reason = reason
       this.failList.forEach(fn => fn())
     }
-    return this;
   }
   // onFulfilled 和 onRejected 都是可选参数
   then (onFulfilled, onRejected) {
