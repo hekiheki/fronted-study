@@ -42,4 +42,4 @@
   参考[Promises/A+规范](https://www.ituring.com.cn/article/66566)
 
 
-2. 
+2. react 和 vue 的区别
