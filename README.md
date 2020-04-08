@@ -37,7 +37,7 @@
 
   **面试须知：**
 
-  [如何实现一个Promise？](promise.js)
+  [如何实现一个Promise？](promise/mypromise.js)
   
   参考[Promises/A+规范](https://www.ituring.com.cn/article/66566)
 
