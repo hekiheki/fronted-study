@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .main{
+      height:  2000px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main"></div>
+  <script>
+    // 函数节流 首次不执行
+    function throttle (fn, duration = 300) {
+      let timer = null;
+      return function (...args) {
+        if (timer) return;
+        const content = this;
+        timer = setTimeout(() => {
+          fn.apply(content, args);
+          timer = null;
+        }, duration)
+      }
+    }
+    // 函数防抖
+    function debounce (fn, duration = 300) {
+      let timer = null;
+      // 存第一次执行的时间
+      let startTime = Date.now();
+      return function (...args) {
+        // 若正在执行则清除定时器，取消执行
+        if (timer) {
+          clearTimeout(timer);
+        }
+        // 存现在的时间
+        let curTime = Date.now();
+        // 计算在duration时间内还剩下多少时间
+        let remaining = duration - (curTime - startTime);
+        const content = this;
+        // 第一次触发立即执行
+        if (remaining <=0 ) {
+          fn.apply(content, args);
+          startTime = Date.now();
+        } else {
+          // 等待remain 后执行
+          timer = setTimeout(() => {
+            fn.apply(content, args);
+          }, remaining);
+        }
+      }
+    }
+    window.onscroll = throttle(function (e) {
+      console.log('防抖')
+    }, 500)
+  </script>
+</body>
+</html>
